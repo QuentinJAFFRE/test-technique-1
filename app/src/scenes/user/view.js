@@ -1,4 +1,4 @@
-import { Formik } from "formik";
+import { Field, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useHistory, useParams } from "react-router-dom";
@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Loader from "../../components/loader";
 import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
+import validator from "validator";
 
 export default () => {
   const [user, setUser] = useState(null);
@@ -51,30 +52,33 @@ const Detail = ({ user }) => {
           toast.error("Some Error!");
         }
       }}>
-      {({ values, handleChange, handleSubmit, isSubmitting }) => {
+      {({ values, errors, handleChange, handleSubmit, isSubmitting }) => {
         return (
           <form onSubmit={handleSubmit}>
             <div className="flex justify-between flex-wrap mt-4">
               <div className="w-full md:w-[260px] mt-[10px] md:mt-0 ">
                 <div className="text-[14px] text-[#212325] font-medium	">Name</div>
-                <input
+                <Field
                   className="projectsInput text-[14px] font-normal text-[#212325] bg-[#F9FBFD] rounded-[10px]"
+                  validate={(v) => validator.isEmpty(v) && "This field is Required"}
+                  id="name"
                   name="name"
-                  disabled
                   value={values.name}
                   onChange={handleChange}
                 />
+                {/* Error */}
+                <p className="text-[12px] text-[#FD3131] my-1">{errors.name}</p>
               </div>
               <div className="w-full md:w-[260px] mt-[10px] md:mt-0">
                 <div className="text-[14px] text-[#212325] font-medium	">Email</div>
-                <input
+                <Field
                   className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                  validate={(v) => !validator.isEmail(v) && !validator.isEmpty(v) && "This must be a valid email"}
                   name="email"
                   value={values.email}
-                  type="email"
-                  pattern="[a-z0-9]+(\.[a-z0-9])*@[a-z]+\.[a-z]+"
                   onChange={handleChange}
                 />
+                <p className="text-[12px] text-[#FD3131] my-1">{errors.email}</p>
               </div>
               <div className="w-full md:w-[165px] mt-[10px] md:mt-0">
                 <div className="text-[14px] text-[#212325] font-medium	">Status</div>
