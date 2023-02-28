@@ -53,9 +53,7 @@ const Detail = ({ user }) => {
       }}>
       {({ values, handleChange, handleSubmit, isSubmitting }) => {
         return (
-
-
-            <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <div className="flex justify-between flex-wrap mt-4">
               <div className="w-full md:w-[260px] mt-[10px] md:mt-0 ">
                 <div className="text-[14px] text-[#212325] font-medium	">Name</div>
@@ -69,7 +67,14 @@ const Detail = ({ user }) => {
               </div>
               <div className="w-full md:w-[260px] mt-[10px] md:mt-0">
                 <div className="text-[14px] text-[#212325] font-medium	">Email</div>
-                <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="email" value={values.email} onChange={handleChange} />
+                <input
+                  className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                  name="email"
+                  value={values.email}
+                  type="email"
+                  pattern="[a-z0-9]+(\.[a-z0-9])*@[a-z]+\.[a-z]+"
+                  onChange={handleChange}
+                />
               </div>
               <div className="w-full md:w-[165px] mt-[10px] md:mt-0">
                 <div className="text-[14px] text-[#212325] font-medium	">Status</div>
