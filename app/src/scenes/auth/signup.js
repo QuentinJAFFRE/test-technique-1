@@ -1,5 +1,5 @@
 import { Field, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
@@ -15,6 +15,15 @@ import { USER_ALREADY_REGISTERED } from "../../constants";
 export default () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth.user);
+
+  const [passwordShow, setPasswordShow] = useState(false);
+  const showHidePassword = () => {
+    if (passwordShow) {
+      setPasswordShow(false);
+    } else {
+      setPasswordShow(true);
+    }
+  };
 
   return (
     // Auth Wrapper
@@ -92,7 +101,20 @@ export default () => {
               </div>
               <div className="mb-[25px]">
                 <div className="flex flex-col-reverse">
-                  <Field className="peer signInInputs" validate={validatePassword} name="password" type="password" id="password" value={values.password} onChange={handleChange} />
+                  <div className="flex flex-grow">
+                    <Field
+                      className="peer signInInputs"
+                      validate={validatePassword}
+                      name="password"
+                      type={passwordShow ? "text" : "password"}
+                      id="password"
+                      value={values.password}
+                      onChange={handleChange}
+                    />
+                    <button onClick={showHidePassword} className="text-[#0560FD] pl-2 ml-3 px-[5px] bg-[#FFFFFF] rounded-[16px]">
+                      Show/Hide
+                    </button>
+                  </div>
                   <label className="peer-focus:text-[#116eee]" htmlFor="password">
                     Password
                   </label>

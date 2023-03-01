@@ -7,7 +7,7 @@ import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
 import { validatePassword, validateUserIdFormat } from "../../utils";
 import validator from "validator";
-import {USER_ALREADY_REGISTERED} from "../../constants";
+import { USER_ALREADY_REGISTERED } from "../../constants";
 
 const NewList = () => {
   const [users, setUsers] = useState(null);
@@ -93,6 +93,15 @@ const Create = () => {
 
   const history = useHistory();
 
+  const [passwordShow, setPasswordShow] = useState(false);
+  const showHidePassword = () => {
+    if (passwordShow) {
+      setPasswordShow(false);
+    } else {
+      setPasswordShow(true);
+    }
+  };
+
   return (
     <div style={{ marginBottom: 10 }}>
       <div className="text-right">
@@ -120,7 +129,7 @@ const Create = () => {
                   setOpen(false);
                   history.push(`/user/${res.data._id}`);
                 } catch (e) {
-                  console.log(e)
+                  console.log(e);
                   if (e.code == USER_ALREADY_REGISTERED) {
                     toast.error("This login is already used", e.code);
                   } else {
@@ -160,14 +169,19 @@ const Create = () => {
                       {/* Password */}
                       <div className="w-full md:w-[48%] mt-2">
                         <div className="text-[14px] text-[#212325] font-medium	">Password</div>
-                        <Field
-                          className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
-                          validate={validatePassword}
-                          name="password"
-                          type="password"
-                          value={values.password}
-                          onChange={handleChange}
-                        />
+                        <div className="flex flex-grow">
+                          <Field
+                            className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                            validate={validatePassword}
+                            name="password"
+                            type={passwordShow ? "text" : "password"}
+                            value={values.password}
+                            onChange={handleChange}
+                          />
+                          <button onClick={showHidePassword} className="text-[#0560FD] mt-2 ml-3 px-[5px] bg-[#FFFFFF] rounded-[16px]">
+                            Show/Hide
+                          </button>
+                        </div>
                         <p className="text-[12px] text-[#FD3131] my-1">{errors.password}</p>
                       </div>
                     </div>
