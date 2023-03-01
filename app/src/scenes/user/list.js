@@ -159,6 +159,7 @@ const Create = () => {
                           className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
                           validate={validatePassword}
                           name="password"
+                          type="password"
                           value={values.password}
                           onChange={handleChange}
                         />

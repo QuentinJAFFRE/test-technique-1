@@ -29,6 +29,7 @@ export default function EditProject() {
     await api.remove(`/project/${id}`);
     toast.success("successfully removed!");
     history.push("/projects");
+    window.location.href = "/project";
   }
 
   if (!project) return <Loader />;

@@ -35,7 +35,7 @@ const ProjectList = () => {
 
   return (
     <div className="w-full p-2 md:!px-8">
-      <Create onChangeSearch={handleSearch} />
+      <Create onChangeSearch={handleSearch} activeProjectsState={[activeProjects, setActiveProjects]} projectsState={[projects, setProjects]} />
       <div className="py-3">
         {activeProjects.map((hit) => {
           return (
@@ -92,8 +92,11 @@ const Budget = ({ project }) => {
   return <ProgressBar percentage={width} max={budget_max_monthly} value={total} />;
 };
 
-const Create = ({ onChangeSearch }) => {
+const Create = ({ onChangeSearch, activeProjectsState, projectsState }) => {
   const [open, setOpen] = useState(false);
+  const [activeProjects, setActiveProjects] = activeProjectsState;
+  const [projects, setProjects] = projectsState;
+
 
   return (
     <div className="mb-[10px] ">
@@ -146,6 +149,13 @@ const Create = ({ onChangeSearch }) => {
                   if (!res.ok) throw res;
                   toast.success("Created!");
                   setOpen(false);
+                  const newActiveProjects = [res.data, ...activeProjects];
+                  setActiveProjects(newActiveProjects);
+                  const newProjects = [res.data, ...projects];
+                  setProjects(newProjects);
+                  //window.location.href = "/project";
+                  console.log(res.data)
+                  console.log(activeProjects[0])
                 } catch (e) {
                   console.log(e);
                   toast.error("Some Error!", e.code);
