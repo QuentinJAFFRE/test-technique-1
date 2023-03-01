@@ -22,10 +22,11 @@ export default () => {
 
       {user && <Redirect to="/" />}
       <Formik
-        initialValues={{ username: "", organisation: "", password: "" }}
+        initialValues={{ username: "", organisation: "", password: "", email: "" }}
         onSubmit={async (values, actions) => {
           try {
             const { user, token } = await api.post(`/user/signup`, values);
+            console.log(user);
             if (token) api.setToken(token);
             if (user) dispatch(setUser(user));
           } catch (e) {
@@ -47,6 +48,17 @@ export default () => {
                 {/* Error */}
                 <p className="text-[12px] text-[#FD3131]">{errors.username}</p>
               </div>
+              <div className="mb-[25px]">
+                <div className="flex flex-col-reverse">
+                  <Field className="peer signInInputs " validate={(v) => !validator.isEmpty(v) && !validator.isEmail(v) && "This must be a valid mail"} name="email" type="text" id="email" value={values.email} onChange={handleChange} />
+                  <label className="peer-focus:text-[#116eee]" htmlFor="email">
+                    Email
+                  </label>
+                </div>
+                {/* Error */}
+                <p className="text-[12px] text-[#FD3131]">{errors.email}</p>
+              </div>
+
               <div className="mb-[25px]">
                 <div className="flex flex-col-reverse">
                   <Field
