@@ -12,15 +12,13 @@ import { validateUserIdFormat } from "../utils";
 
 export default () => {
   const dispatch = useDispatch();
-
   const user = useSelector((state) => state.Auth.user);
   console.log(user);
-  const [values, setValues] = useState({
+  const [values] = useState({
     ...user,
     email: user.email || "",
     address: user.address || "",
   });
-  console.log(values);
 
   if (!user) return <Loader />;
 

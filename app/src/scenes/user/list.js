@@ -1,10 +1,12 @@
-import { Formik } from "formik";
+import { Field, Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useHistory } from "react-router-dom";
 import Loader from "../../components/loader";
 import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
+import { validateUserIdFormat } from "../../utils";
+import validator from "validator";
 
 const NewList = () => {
   const [users, setUsers] = useState(null);
@@ -105,7 +107,7 @@ const Create = () => {
               e.stopPropagation();
             }}>
             <Formik
-              initialValues={{}}
+              initialValues={{ name: "", email: "", password: "" }}
               onSubmit={async (values, { setSubmitting }) => {
                 try {
                   values.status = "active";
@@ -122,17 +124,31 @@ const Create = () => {
                 }
                 setSubmitting(false);
               }}>
-              {({ values, handleChange, handleSubmit, isSubmitting }) => (
+              {({ values, errors, handleChange, handleSubmit, isSubmitting }) => (
                 <React.Fragment>
                   <div>
                     <div className="flex justify-between flex-wrap">
                       <div className="w-full md:w-[48%] mt-2">
                         <div className="text-[14px] text-[#212325] font-medium	">Name</div>
-                        <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="username" value={values.username} onChange={handleChange} />
+                        <Field
+                          className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                          validate={validateUserIdFormat}
+                          name="name"
+                          value={values.name}
+                          onChange={handleChange}
+                        />
+                        <p className="text-[12px] text-[#FD3131] my-1">{errors.name}</p>
                       </div>
                       <div className="w-full md:w-[48%] mt-2">
                         <div className="text-[14px] text-[#212325] font-medium	">Email</div>
-                        <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="email" value={values.email} onChange={handleChange} />
+                        <Field
+                          className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                          validate={(v) => !validator.isEmail(v) && !validator.isEmpty(v) && "This must be a valid email"}
+                          name="email"
+                          value={values.email}
+                          onChange={handleChange}
+                        />
+                        <p className="text-[12px] text-[#FD3131] my-1">{errors.email}</p>
                       </div>
                     </div>
                     <div className="flex justify-between flex-wrap mt-3">
