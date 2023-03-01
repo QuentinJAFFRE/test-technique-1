@@ -24,7 +24,7 @@ export default () => {
 
       {user && <Redirect to="/" />}
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={{ identifier: "", password: "" }}
         onSubmit={async (values, actions) => {
           console.log(values);
           try {
@@ -44,19 +44,18 @@ export default () => {
                 <div className="flex flex-col-reverse">
                   <Field
                     className="peer signInInputs "
-                    validate={(v) => isSignUp == false && validateUserIdFormat(v)}
-                    name="username"
-                    type="text"
-                    id="username"
-                    value={values.username}
+                    validate={(v) => isSignUp == false && !validator.isEmail(v) && validateUserIdFormat(v)}
+                    name="identifier"
+                    id="identifier"
+                    value={values.identifier}
                     onChange={handleChange}
                   />
                   <label className="peer-focus:text-[#116eee]" htmlFor="username">
-                    Username
+                    Username or Email
                   </label>
                 </div>
                 {/* Error */}
-                <p className="text-[12px] text-[#FD3131]">{errors.username}</p>
+                <p className="text-[12px] text-[#FD3131]">{errors.identifier}</p>
               </div>
               <div className="mb-[25px]">
                 <div className="flex flex-col-reverse">

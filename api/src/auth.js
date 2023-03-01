@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const config = require("./config");
-const { validatePassword } = require("./utils");
+const { validatePassword, validateEmailFormat} = require("./utils");
 
 const EMAIL_OR_PASSWORD_INVALID = "EMAIL_OR_PASSWORD_INVALID";
 const PASSWORD_INVALID = "PASSWORD_INVALID";
@@ -25,13 +25,19 @@ class Auth {
   }
 
   async signin(req, res) {
-    let { password, username } = req.body;
-    username = (username || "").trim().toLowerCase();
-    console.log(username)
-    if (!username || !password) return res.status(400).send({ ok: false, code: EMAIL_AND_PASSWORD_REQUIRED });
+    let { password, identifier } = req.body;
+    identifier = (identifier || "").trim().toLowerCase();
+
+    console.log(req.body)
+    if (!identifier || !password) return res.status(400).send({ ok: false, code: EMAIL_AND_PASSWORD_REQUIRED });
 
     try {
-      const user = await this.model.findOne({ name: username });
+      let user = null;
+      if (validateEmailFormat(identifier)) {
+         user =  await this.model.findOne({ email: identifier })
+      } else {
+         user = await this.model.findOne({name: identifier});
+      }
       if (!user) return res.status(401).send({ ok: false, code: USER_NOT_EXISTS });
 
       const match = await user.comparePassword(password);
