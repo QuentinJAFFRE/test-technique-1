@@ -19,11 +19,19 @@ export function formatDate(date) {
 }
 
 export function validateUserIdFormat(userId) {
-  console.log(userId);
   if (validator.isEmpty(userId)) {
     return "This field is Required";
   }
   if (!validator.matches(userId, USER_ID_REGEXP)) {
     return "This field must be like : surname.name[id]";
+  }
+}
+
+export function validatePassword(password) {
+  if (validator.isEmpty(password)) {
+    return "This field is Required";
+  }
+  if (!validator.isStrongPassword(password)) {
+    return "The password must have a minimum length of 8 caracter, and must contain at least an uppercase letter, a number, and a special symbol.";
   }
 }

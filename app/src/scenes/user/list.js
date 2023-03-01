@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import Loader from "../../components/loader";
 import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
-import { validateUserIdFormat } from "../../utils";
+import { validatePassword, validateUserIdFormat } from "../../utils";
 import validator from "validator";
 
 const NewList = () => {
@@ -155,7 +155,14 @@ const Create = () => {
                       {/* Password */}
                       <div className="w-full md:w-[48%] mt-2">
                         <div className="text-[14px] text-[#212325] font-medium	">Password</div>
-                        <input className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]" name="password" value={values.password} onChange={handleChange} />
+                        <Field
+                          className="projectsInput text-[14px] font-normal text-[#212325] rounded-[10px]"
+                          validate={validatePassword}
+                          name="password"
+                          value={values.password}
+                          onChange={handleChange}
+                        />
+                        <p className="text-[12px] text-[#FD3131] my-1">{errors.password}</p>
                       </div>
                     </div>
                   </div>

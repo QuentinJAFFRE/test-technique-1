@@ -34,7 +34,8 @@ const Header = () => {
     <div className="p-2 bg-[#EBF3FC] border-b border-[#a0a6b124] flex justify-between items-center w-full right-4 z-50">
       <div className="flex items-center gap-4">
         <Link to="/" className="group flex items-end hover:no-underline">
-          <img src={Logo} height={24} width={24} />
+          <img className="m-auto" src={Logo} height={24} width={24} />
+          <div className="text-[22px] font-semibold m-auto pl-2"> ProMan </div>
         </Link>
       </div>
       {/* DropDown */}
@@ -44,8 +45,16 @@ const Header = () => {
             value={user.availability}
             onChange={(e) => handleAvailability(e.target.value)}
             className="w-[180px] bg-[#FFFFFF] text-[13px] text-[#212325]  font-normal py-[10px] px-[14px] rounded-[10px] border-r-[16px] border-[transparent] cursor-pointer shadow-sm">
-            <option value="available">Available</option>
-            <option value="not available">Not Available</option>
+            <option
+              className="w-[180px] h-2 bg-[#eeeeFF] text-[13px] text-[#212325]  font-normal py-[10px] px-[14px] border-[transparent] cursor-pointer shadow-sm"
+              value="available">
+              Available
+            </option>
+            <option
+              className="w-[180px] h-2 bg-[#FFFFFF] text-[13px] text-[#212325] space-x-1 font-normal py-[10px] px-[14px] border-[transparent] cursor-pointer shadow-sm"
+              value="not available">
+              Not Available
+            </option>
           </select>
         </div>
         <img className="w-9 h-9 bg-[#aaa] rounded-full cursor-pointer object-cover" onClick={() => setOpen(!open)} src={user.avatar} />
