@@ -10,6 +10,7 @@ import { setUser } from "../../redux/auth/actions";
 import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
 import { validatePassword, validateUserIdFormat } from "../../utils";
+import { USER_ALREADY_REGISTERED } from "../../constants";
 
 export default () => {
   const dispatch = useDispatch();
@@ -31,7 +32,11 @@ export default () => {
             if (user) dispatch(setUser(user));
           } catch (e) {
             console.log("e", e);
-            toast.error("Wrong login", e.code);
+            if (e.code == USER_ALREADY_REGISTERED) {
+              toast.error("This login is already used", e.code);
+            } else {
+              toast.error("Wrong login", e.code);
+            }
           }
           actions.setSubmitting(false);
         }}>
@@ -50,7 +55,15 @@ export default () => {
               </div>
               <div className="mb-[25px]">
                 <div className="flex flex-col-reverse">
-                  <Field className="peer signInInputs " validate={(v) => !validator.isEmpty(v) && !validator.isEmail(v) && "This must be a valid mail"} name="email" type="text" id="email" value={values.email} onChange={handleChange} />
+                  <Field
+                    className="peer signInInputs "
+                    validate={(v) => !validator.isEmpty(v) && !validator.isEmail(v) && "This must be a valid mail"}
+                    name="email"
+                    type="text"
+                    id="email"
+                    value={values.email}
+                    onChange={handleChange}
+                  />
                   <label className="peer-focus:text-[#116eee]" htmlFor="email">
                     Email
                   </label>

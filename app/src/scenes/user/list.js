@@ -7,6 +7,7 @@ import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
 import { validatePassword, validateUserIdFormat } from "../../utils";
 import validator from "validator";
+import {USER_ALREADY_REGISTERED} from "../../constants";
 
 const NewList = () => {
   const [users, setUsers] = useState(null);
@@ -119,8 +120,12 @@ const Create = () => {
                   setOpen(false);
                   history.push(`/user/${res.data._id}`);
                 } catch (e) {
-                  console.log(e);
-                  toast.error("Some Error!", e.code);
+                  console.log(e)
+                  if (e.code == USER_ALREADY_REGISTERED) {
+                    toast.error("This login is already used", e.code);
+                  } else {
+                    toast.error("Some error!", e.code);
+                  }
                 }
                 setSubmitting(false);
               }}>

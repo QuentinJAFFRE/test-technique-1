@@ -66,7 +66,9 @@ class Auth {
   async signup(req, res) {
     try {
       const { password, username, organisation, email } = req.body;
-      console.log(req.body)
+      const userAlreadyExist  = await this.model.findOne({name: username});
+      if (userAlreadyExist) throw {code : 11000, cause: "user already exists"}
+
       if (password && !validatePassword(password)) return res.status(200).send({ ok: false, user: null, code: PASSWORD_NOT_VALIDATED });
 
       const user = await this.model.create({ name: username, organisation, password, email });
