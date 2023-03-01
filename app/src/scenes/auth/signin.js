@@ -9,12 +9,13 @@ import { setUser } from "../../redux/auth/actions";
 
 import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
-import { USER_ID_REGEXP } from "../../constants";
+
 import { validateUserIdFormat } from "../../utils";
 
 export default () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.Auth.user);
+  let isSignUp = false;
 
   return (
     // Auth Wrapper
@@ -41,7 +42,15 @@ export default () => {
             <form onSubmit={handleSubmit}>
               <div className="mb-[25px]">
                 <div className="flex flex-col-reverse">
-                  <Field className="peer signInInputs " validate={validateUserIdFormat} name="username" type="text" id="username" value={values.username} onChange={handleChange} />
+                  <Field
+                    className="peer signInInputs "
+                    validate={(v) => isSignUp == false && validateUserIdFormat(v)}
+                    name="username"
+                    type="text"
+                    id="username"
+                    value={values.username}
+                    onChange={handleChange}
+                  />
                   <label className="peer-focus:text-[#116eee]" htmlFor="username">
                     Username
                   </label>
@@ -53,7 +62,7 @@ export default () => {
                 <div className="flex flex-col-reverse">
                   <Field
                     className="peer signInInputs"
-                    validate={(v) => validator.isEmpty(v) && "This field is Required"}
+                    validate={(v) => isSignUp == false && validator.isEmpty(v) && "This field is Required"}
                     name="password"
                     type="password"
                     id="password"
@@ -78,7 +87,9 @@ export default () => {
                 </LoadingButton>
                 <LoadingButton
                   className="font-[Helvetica] w-[220px] bg-[#009dff] hover:bg-[#0069d9] text-[#fff] rounded-[30px] m-auto block text-[16px] p-[8px] min-h-[42px] "
-                  onClick={() => (window.location.href = "/auth/signup")}
+                  onClick={() => {
+                    (isSignUp = true) && (window.location.href = "/auth/signup");
+                  }}
                   color="primary">
                   Signup
                 </LoadingButton>
