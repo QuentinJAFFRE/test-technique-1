@@ -41,6 +41,7 @@ router.get("/", passport.authenticate("user", { session: false }), async (req, r
 router.post("/", passport.authenticate("user", { session: false }), async (req, res) => {
   try {
     const body = req.body;
+    console.log(body)
     await ProjectObject.findOneAndUpdate({ _id: body.projectId }, { last_updated_at: new Date() }, { new: true });
     const query = { projectId: body.projectId, userId: body.userId, date: body.date };
     const activities = await ActivityObject.findOneAndUpdate(query, { ...body, organisation: req.user.organisation }, { new: true, upsert: true });

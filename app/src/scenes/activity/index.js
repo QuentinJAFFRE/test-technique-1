@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { MdDeleteForever } from "react-icons/md";
+import { MdDeleteForever, MdDisabledVisible } from "react-icons/md";
 import { useSelector } from "react-redux";
 import Loader from "../../components/loader";
 import api from "../../services/api";
@@ -34,11 +34,6 @@ const Activity = () => {
     // Container
     <div className="w-screen md:w-full">
       <div className="flex flex-wrap gap-5 p-2 md:!px-8">
-        <SelectProject
-          value={project}
-          onChange={(e) => setProject(e.name)}
-          className="w-[180px] bg-[#FFFFFF] text-[#212325] py-[10px] px-[14px] rounded-[10px] border-r-[16px] border-[transparent] cursor-pointer shadow-sm font-normal text-[14px]"
-        />
         <SelectMonth start={-3} indexDefaultValue={3} value={date} onChange={(e) => setDate(e.target.value)} showArrows />
       </div>
       {date && user && <Activities date={new Date(date)} user={user} project={project} />}
@@ -67,6 +62,8 @@ const Activities = ({ date, user, project }) => {
   const onAddActivities = (project) => {
     const found = activities.find((a) => a.projectId === project._id);
     if (found) return toast.error(`Project ${project.name} already added !`);
+    console.log("===Project add try===")
+    console.log(activities)
     setActivities([
       ...activities,
       {
@@ -84,6 +81,7 @@ const Activities = ({ date, user, project }) => {
         detail: days.map((e) => ({ date: e.date, value: 0 })),
       },
     ]);
+    console.log(activities)
   };
 
   async function onSave() {
@@ -93,12 +91,19 @@ const Activities = ({ date, user, project }) => {
     }
   }
 
-  async function onDelete(i) {
-    if (window.confirm("Are you sure ?")) {
-      const activity = activities[i];
-      await api.remove(`/activity/${activity._id}`);
-      toast.success(`Deleted ${activity.project}`);
-    }
+  async function onUnview(i, activitiesState) {
+    const [activities, setActivities] = activitiesState;
+    //if (window.confirm("Are you sure ?")) {
+    //const activity = activities[i];
+    console.log("======")
+    console.log(i);
+    console.log(activities)
+    activities.splice(i, 1);
+    console.log(activities)
+    setActivities(activities);
+    console.log(activities)
+    //toast.success(`Deleted ${activity.project}`);
+    //}
   }
 
   function onUpdateValue(i, j, value) {
@@ -132,11 +137,16 @@ const Activities = ({ date, user, project }) => {
     <div className="flex flex-wrap py-3 gap-4 text-black">
       <div className="w-screen md:w-full p-2 md:!px-8">
         {/* Table Container */}
-        {true && (
+        {
           <div className="mt-2 rounded-xl bg-[#fff] overflow-auto">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
+                  <tr>
+                    <th className="w-[50px] text-[12px] text-[#212325] px-[10px] py-2">
+                      <SelectProject disabled={activities.map((e) => e.project)} value="" onChange={(e) => onAddActivities(e)} />
+                    </th>
+                  </tr>
                   <tr>
                     <th className="py-[10px] text-[14px] font-bold text-[#212325] text-left pl-[10px]">Projects</th>
                     {days.map((e) => {
@@ -195,7 +205,7 @@ const Activities = ({ date, user, project }) => {
                           })}
                           <th className={`border border-[#E5EAEF] py-[6px]`}>
                             <div className={`flex justify-center cursor-pointer text-xl hover:text-red-500`}>
-                              <MdDeleteForever onClick={() => onDelete(i)} />
+                              <MdDisabledVisible onClick={() => onUnview(i, [activities, setActivities])} />
                             </div>
                           </th>
                         </tr>
@@ -222,11 +232,6 @@ const Activities = ({ date, user, project }) => {
                       </React.Fragment>
                     );
                   })}
-                  <tr>
-                    <th className="w-[50px] text-[12px] text-[#212325] px-[10px] py-2">
-                      <SelectProject disabled={activities.map((e) => e.project)} value="" onChange={(e) => onAddActivities(e)} />
-                    </th>
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -234,7 +239,7 @@ const Activities = ({ date, user, project }) => {
               Save
             </button>
           </div>
-        )}
+        }
       </div>
     </div>
   );
