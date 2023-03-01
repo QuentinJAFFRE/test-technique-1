@@ -1,3 +1,6 @@
+import validator from "validator";
+import { USER_ID_REGEXP } from "../constants";
+
 export function getMonths(count = 20) {
   const arr = [];
   var d = new Date();
@@ -13,4 +16,14 @@ export function formatDate(date) {
     month: "long",
     year: "numeric",
   });
+}
+
+export function validateUserIdFormat(userId) {
+  console.log(userId);
+  if (validator.isEmpty(userId)) {
+    return "This field is Required";
+  }
+  if (!validator.matches(userId, USER_ID_REGEXP)) {
+    return "This field must be like : surname.name[id]";
+  }
 }

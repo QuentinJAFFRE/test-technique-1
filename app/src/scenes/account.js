@@ -8,12 +8,20 @@ import LoadingButton from "../components/loadingButton";
 import { setUser } from "../redux/auth/actions";
 import api from "../services/api";
 import { Field, Formik } from "formik";
+import { validateUserIdFormat } from "../utils";
 
 export default () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.Auth.user);
-  const [values] = useState(user);
+  console.log(user);
+  const [values, setValues] = useState({
+    ...user,
+    email: user.email || "",
+    address: user.address || "",
+  });
+  console.log(values);
+
   if (!user) return <Loader />;
 
   return (
@@ -23,8 +31,6 @@ export default () => {
         <Formik
           initialValues={values}
           onSubmit={async (values) => {
-            console.log(values);
-
             try {
               await api.put(`/user/${user._id}`, values);
               toast.success("Updated!");
@@ -40,14 +46,7 @@ export default () => {
               <div className="flex justify-between flex-wrap mt-3">
                 <div className="w-full md:w-[48.5%]">
                   <div>Name</div>
-                  <Field
-                    className="projectsInput"
-                    validate={(v) => validator.isEmpty(v) && "This field is Required"}
-                    id="name"
-                    name="name"
-                    value={values.name}
-                    onChange={handleChange}
-                  />
+                  <Field className="projectsInput" validate={validateUserIdFormat} id="name" name="name" value={values.name} onChange={handleChange} />
                   {/* Error */}
                   <p className="text-[12px] text-[#FD3131] my-1">{errors.name}</p>
                 </div>

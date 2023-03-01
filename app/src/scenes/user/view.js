@@ -7,6 +7,7 @@ import Loader from "../../components/loader";
 import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
 import validator from "validator";
+import {validateUserIdFormat} from "../../utils";
 
 export default () => {
   const [user, setUser] = useState(null);
@@ -60,7 +61,7 @@ const Detail = ({ user }) => {
                 <div className="text-[14px] text-[#212325] font-medium	">Name</div>
                 <Field
                   className="projectsInput text-[14px] font-normal text-[#212325] bg-[#F9FBFD] rounded-[10px]"
-                  validate={(v) => validator.isEmpty(v) && "This field is Required"}
+                  validate={validateUserIdFormat}
                   id="name"
                   name="name"
                   value={values.name}
@@ -78,6 +79,7 @@ const Detail = ({ user }) => {
                   value={values.email}
                   onChange={handleChange}
                 />
+                {/* Error */}
                 <p className="text-[12px] text-[#FD3131] my-1">{errors.email}</p>
               </div>
               <div className="w-full md:w-[165px] mt-[10px] md:mt-0">

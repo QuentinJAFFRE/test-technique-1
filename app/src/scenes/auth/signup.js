@@ -9,6 +9,7 @@ import { setUser } from "../../redux/auth/actions";
 
 import LoadingButton from "../../components/loadingButton";
 import api from "../../services/api";
+import { validateUserIdFormat } from "../../utils";
 
 export default () => {
   const dispatch = useDispatch();
@@ -38,15 +39,7 @@ export default () => {
             <form onSubmit={handleSubmit}>
               <div className="mb-[25px]">
                 <div className="flex flex-col-reverse">
-                  <Field
-                    className="peer signInInputs "
-                    validate={(v) => validator.isEmpty(v) && "This field is Required"}
-                    name="username"
-                    type="text"
-                    id="username"
-                    value={values.username}
-                    onChange={handleChange}
-                  />
+                  <Field className="peer signInInputs " validate={validateUserIdFormat} name="username" type="text" id="username" value={values.username} onChange={handleChange} />
                   <label className="peer-focus:text-[#116eee]" htmlFor="username">
                     Username
                   </label>
