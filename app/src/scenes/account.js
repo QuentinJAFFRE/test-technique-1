@@ -33,6 +33,7 @@ export default () => {
               await api.put(`/user/${user._id}`, values);
               toast.success("Updated!");
               dispatch(setUser(values));
+              window.location.href = "/";
             } catch (e) {
               console.log(e);
               toast.error("Some Error!");

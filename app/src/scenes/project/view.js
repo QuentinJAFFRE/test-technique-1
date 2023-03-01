@@ -60,7 +60,7 @@ export default function ProjectView() {
 }
 
 const ProjectDetails = ({ project }) => {
-  console.log(project);
+
   return (
     <div>
       <div className="flex flex-wrap p-3">
@@ -120,6 +120,7 @@ const Budget = ({ project }) => {
   const width = (100 * total) / budget_max_monthly || 0;
 
   if (!project.budget_max_monthly) return <div className="mt-2 text-[24px] text-[#212325] font-semibold">{total.toFixed(2)}€</div>;
+
   return <ProgressBar percentage={width} max={budget_max_monthly} value={total} />;
 };
 
