@@ -255,6 +255,7 @@ const UserCard = ({ hit, projects }) => {
             <p className="text-white text-[12px] uppercase tracking-wider">{hit.availability}</p>
           </div>
         </div>
+      </div>
       {/* infos */}
       <div className="flex flex-col flex-1 justify-between">
         <div className="flex flex-col items-center text-center my-4 space-y-1">
